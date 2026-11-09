@@ -2,11 +2,20 @@
 
 A small notebook that lives on your phone and your computer at once. Write an idea and attach any file. It appears on the other device the moment both are open.
 
-## Install
+## Download
 
-**Windows.** Run `build\windows\x64\runner\Release\midad.exe` (or the H11 shortcut on the Desktop / Start menu). Keep the whole `Release` folder together. The first time it runs, Windows Firewall asks about network access: allow **Private networks**.
+**[op-h.github.io/H11](https://op-h.github.io/H11/)**: the download page with how it works.
 
-**Android (Galaxy S23+).** Copy `build\app\outputs\flutter-apk\app-release.apk` to the phone, open it, and allow "Install unknown apps" for your file manager when asked.
+- **Windows 10/11:** [H11-Setup.exe](https://github.com/op-h/H11/releases/latest/download/H11-Setup.exe). One installer that adds Start menu and desktop shortcuts, a firewall rule for private networks, and an optional start with Windows. Uninstall from Settings → Apps.
+- **Android 7+:** [H11.apk](https://github.com/op-h/H11/releases/latest/download/H11.apk). Open it on the phone and allow "Install unknown apps" when asked.
+
+## Build from source
+
+```
+flutter build apk --release
+flutter build windows --release
+"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\H11.iss   # -> build\installer\H11-Setup.exe
+```
 
 ## Link the two
 
@@ -20,7 +29,7 @@ Both devices must be on the same Wi-Fi. The QR code works once and expires after
 - **Saving.** Pages save as you type, on each device separately.
 - **Syncing.** Changes sync live while both apps are open. Pages written while apart sync the next time both are open.
 - **Files.** Every file keeps its original bytes, format and name.
-- **Deleting.** Deleting a page removes it from **that device only**, and the other device keeps its copy.
+- **Deleting.** Every delete asks: keep it, delete it **here only** (the other device keeps its copy), or delete it on **both devices**.
 - **Translation.** Arabic ⇄ English, **free with no key**: Google Translate by default, MyMemory as a backup. For the best free quality, add a free DeepL API key (500,000 characters a month, deepl.com/pro-api) in Settings. Claude is optional and uses your own key. If one service fails, the next takes over automatically. The translation is saved with the page and shows which engine made it, so both devices see it. Text is sent to the chosen service to be translated.
 - **On the computer.** The window is small, like a pocket notebook. Closing it hides it to the tray so syncing continues, and **Ctrl+Alt+M** opens it from anywhere. Settings → *Start with Windows* starts it in the tray at login.
 
@@ -37,7 +46,7 @@ Both devices must be on the same Wi-Fi. The QR code works once and expires after
 ## Verification
 
 ```
-flutter test --concurrency=1                  # 77 tests: sync, 15 attacks, edge cases, translation, assistant
+flutter test --concurrency=1                  # 92 tests: sync, 15 attacks, edge cases, translation, assistant
 dart run tool/noise_vectors.dart > v.json
 python tool/noise_interop.py v.json           # byte-for-byte match with the independent `noiseprotocol` library
 ```
